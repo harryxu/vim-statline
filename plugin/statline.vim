@@ -72,6 +72,10 @@ else
     set statusline+=%1*[%t]%*
 endif
 
+"display a warning if &paste is set
+set statusline+=%#error#
+set statusline+=%{&paste?'[paste]':''}
+set statusline+=%*
 
 " ---- flags ----
 
@@ -106,6 +110,17 @@ endif
 " ---- separation between left/right aligned items ----
 
 set statusline+=%=
+
+set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+"return the syntax highlight group under the cursor ''
+function! StatuslineCurrentHighlight()
+    let name = synIDattr(synID(line('.'),col('.'),1),'name')
+    if name == ''
+        return ''
+    else
+        return '[' . name . ']'
+    endif
+endfunction
 
 
 " ---- current line and column ----
@@ -241,3 +256,5 @@ if g:statline_trailing_space
         autocmd cursorhold,bufwritepost * unlet! b:statline_trailing_space_warning
     augroup END
 endif
+
+
