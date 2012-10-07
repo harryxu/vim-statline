@@ -110,15 +110,23 @@ feature set: >
     let g:statline_mixed_indent = 0
 <
 
-                                *statline-[&et]*  *statline-[mixed-indenting]*
+                                            *statline-[&et]*  *statline-[mix]*
 Mixed indent errors:~
     [&et]               Warn if using different tab format than the one
                         specified by |expandtab| or |noet|.
 
-    [mixed-indenting]   Warn if mixed tabs & spaces are used for indenting on
+    [mix]               Warn if mixed tabs & spaces are used for indenting on
                         the same line.
                         PS: it will ignore spaces just before `*` to avoid
                         marking JavaDoc style comments as mixed indent.
+
+------------------------------------------------------------------------------
+                                              *'statline_mixed_indent_string'*
+
+Message shown when file contains mixed tabs & spaces. Defaults to
+'[mix]'. To edit it: >
+    let g:statline_mixed_indent_string = '[mixed-indenting]'
+<
 
 ------------------------------------------------------------------------------
                                                     *'statline_show_charcode'*
@@ -156,18 +164,36 @@ command >
     :so $VIMRUNTIME/syntax/hitest.vim
 <
 
+If you want to disable all colors the easiest way is to link the |hl-User1..9|
+groups to the |hl-StatusLine| group: >
+    hi link User1 StatusLine
+    hi link User2 StatusLine
+    hi link User3 StatusLine
+    hi link User4 StatusLine
+<
+
+The |hl-StatusLine| and |hl-StatusLineNC| groups usually set the colors with
+`term=reverse` which means the foreground color will be used as background
+color, you can change the colors like this: >
+    " greyscale statusline
+    hi StatusLine guifg=#000000 guibg=#FFFFFF ctermfg=0 ctermbg=15
+    hi StatusLineNC guifg=#808080 guibg=#000000 ctermfg=8 ctermbg=0
+<
+
 ==============================================================================
 3. Credits                                                  *statline-credits*
 
-This plugin is heavily based on the Vim settings from @factorylabs and also
-@gf3 (Gianni Chiappetta) settings. It was originally assembled by
-@millermedeiros (Miller Medeiros).
+This plugin was originally assembled by @millermedeiros (Miller Medeiros).
+
+It was heavily inspired by the Vim settings from @factorylabs, @gf3 (Gianni
+Chiappetta) and @scrooloose whitespace flags (Martin Grengell).
 
 Other contributors:
 
- - @mkitt
+ - Matthew Kitt (@mkitt)
  - @Idx
- - @knl
+ - Nikola Knežević (@knl)
+ - Martin Grengell (@scrooloose)
 
 ==============================================================================
 4. License                                                  *statline-license*
@@ -178,7 +204,16 @@ statline is released under the wtfpl http://sam.zoy.org/wtfpl/COPYING
 ==============================================================================
 5. Changelog                                              *statline-changelog*
 
+
 Next
+
+    - Add |'statline_mixed_indent_string'| and change default string to
+      "[mix]" for brevity. [#19]
+
+
+------------------------------------------------------------------------------
+
+v0.3.0 (2011/12/27)
 
     - Add |'statline_show_charcode'| (@knl)
     - Add |'statline_no_encoding_string'| (@knl)
@@ -190,6 +225,7 @@ Next
     - Add safe checks to all plugins to make sure they aren't called if they
       don't exist, make it more portable since users may copy vimrc files that
       enable plugin integration.
+    - Improve whitespace checks. (@scrooloose)
 
 
 ------------------------------------------------------------------------------
